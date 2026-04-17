@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | INSIGHT HIRE{% endblock %}
+
+{% block content %}
+<section class="dashboard-section">
+    <div class="container">
+        <div class="dashboard-hero panel panel-highlight">
+            <div>
+                <p class="eyebrow">Job seeker dashboard</p>
+                <h1>Welcome back, {{ current_user.display_name }}.</h1>
+                <p>A cleaner starting point for research, prep, and premium discovery.</p>
+            </div>
+            <div class="hero-actions">
+                <a href="{{ url_for('search') }}" class="btn btn-primary">Search Companies</a>
+                <a href="{{ url_for('pricing') }}" class="btn btn-secondary">View Pricing</a>
+            </div>
+        </div>
+
+        <div class="dashboard-layout">
+            <div class="dashboard-main">
+                <section class="panel dashboard-search-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">Company search</p>
+                            <h2>Search your shortlist</h2>
+                        </div>
+                    </div>
+                    <form method="get" action="{{ url_for('search') }}" class="search-form" data-loading-text="Searching...">
+                        <input type="text" name="q" placeholder="Search Google, Microsoft, Nvidia, or Apple">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </form>
+                </section>
+
+                <section class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">Recommended companies</p>
+                            <h2>Your strongest next targets</h2>
+                        </div>
+                    </div>
+                    <div class="card-grid two-up">
+                        {% for company in recommendations %}
+                            <article class="dashboard-company-card">
+                                <div class="panel-heading">
+                                    <h3>{{ company.name }}</h3>
+                                    <span class="score-pill">{{ company.job_fit.score }}/100</span>
+                                </div>
+                                <p>{{ company.dashboard_reason }}</p>
+                                <div class="chip-row">
+                                    <span class="chip">{{ company.insight_count }} insights</span>
+                                    <span class="chip">{{ company.unlocked_referrals }} open referrals</span>
+                                    <span class="chip">{{ company.question_count }} interview examples</span>
+                                </div>
+                                <a href="{{ url_for('company_detail', slug=company.slug) }}" class="btn btn-secondary btn-small">Open Company Profile</a>
+                            </article>
+                        {% endfor %}
+                    </div>
+                </section>
+
+                <section class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">Continue exploring</p>
+                            <h2>Best places to click next</h2>
+                        </div>
+                    </div>
+                    <div class="mini-list">
+                        <div class="mini-list-row">
+                            <div>
+                                <p class="mini-list-title">Google employee insights</p>
+                                <p class="mini-list-copy">One of the strongest trust-building sections.</p>
+                            </div>
+                            <a href="{{ url_for('company_detail', slug='google') }}" class="btn btn-ghost btn-small">Open</a>
+                        </div>
+                        <div class="mini-list-row">
+                            <div>
+                                <p class="mini-list-title">Microsoft referral matching</p>
+                                <p class="mini-list-copy">Shows unlocked and premium referral paths.</p>
+                            </div>
+                            <a href="{{ url_for('company_detail', slug='microsoft') }}#referrals" class="btn btn-ghost btn-small">Open</a>
+                        </div>
+                        <div class="mini-list-row">
+                            <div>
+                                <p class="mini-list-title">Nvidia skill gap analysis</p>
+                                <p class="mini-list-copy">A clean example of believable AI coaching.</p>
+                            </div>
+                            <a href="{{ url_for('company_detail', slug='nvidia') }}#skills" class="btn btn-ghost btn-small">Open</a>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">Recent activity</p>
+                            <h2>Fresh signals</h2>
+                        </div>
+                    </div>
+                    <div class="activity-list">
+                        {% for item in recent_activity %}
+                            <article class="activity-item">
+                                <div>
+                                    <p class="activity-title">{{ item.title }}</p>
+                                    <p class="activity-copy">{{ item.detail }}</p>
+                                </div>
+                                <span class="activity-time">{{ item.time }}</span>
+                            </article>
+                        {% endfor %}
+                    </div>
+                </section>
+            </div>
+
+            <aside class="dashboard-side">
+                <section class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">Quick stats</p>
+                            <h2>At a glance</h2>
+                        </div>
+                    </div>
+                    <div class="quick-stat-list">
+                        {% for stat in quick_stats %}
+                            <article class="quick-stat-card">
+                                <p class="quick-stat-value">{{ stat.value }}</p>
+                                <p class="quick-stat-label">{{ stat.label }}</p>
+                                <p class="quick-stat-copy">{{ stat.detail }}</p>
+                            </article>
+                        {% endfor %}
+                    </div>
+                </section>
+
+                <section class="panel ai-panel">
+                    <p class="eyebrow">AI tools preview</p>
+                    <h2>{{ ai_panel.headline }}</h2>
+                    <p>{{ ai_panel.summary }}</p>
+                    <ul class="detail-list">
+                        {% for bullet in ai_panel.bullets[:2] %}
+                            <li>{{ bullet }}</li>
+                        {% endfor %}
+                    </ul>
+                </section>
+
+                <section class="panel resume-preview-card">
+                    <p class="eyebrow">Resume analysis preview</p>
+                    <h2>{{ demo_resume.candidate }}</h2>
+                    <p>{{ demo_resume.target_role }}</p>
+                    <div class="chip-row">
+                        {% for skill in demo_resume.skills[:4] %}
+                            <span class="chip">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
+                    <button
+                        type="button"
+                        class="btn btn-secondary btn-block"
+                        data-modal-title="Built-in sample resume"
+                        data-modal-message="This preview uses Alex Chen's built-in resume so the analysis stays instant and consistent."
+                    >
+                        Preview Resume
+                    </button>
+                </section>
+
+                <section class="panel upgrade-card">
+                    <p class="eyebrow">Pricing teaser</p>
+                    <h2>Why Premium works</h2>
+                    <p>Locked referral cards and deeper prep make the business model feel credible.</p>
+                    <a href="{{ url_for('pricing') }}" class="btn btn-primary btn-block">Explore Plans</a>
+                </section>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}

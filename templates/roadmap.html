@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Roadmap | INSIGHT HIRE{% endblock %}
+
+{% block content %}
+<section class="roadmap-section">
+    <div class="container">
+        <div class="page-hero panel">
+            <p class="eyebrow">Coming soon</p>
+            <h1>Future ideas that extend the INSIGHT HIRE story.</h1>
+            <p>This page outlines how the platform could expand beyond the current product preview.</p>
+        </div>
+
+        <div class="card-grid three-up">
+            {% for item in roadmap_items %}
+                <article class="panel roadmap-card">
+                    <h2>{{ item.title }}</h2>
+                    <p>{{ item["copy"] }}</p>
+                </article>
+            {% endfor %}
+        </div>
+
+        <section class="panel roadmap-callout">
+            <p class="eyebrow">Product direction</p>
+            <h2>Why the roadmap matters</h2>
+            <p>It shows that INSIGHT HIRE can expand beyond static research into mentoring, career partnerships, and a stronger candidate support ecosystem.</p>
+        </section>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,301 @@
+{% extends "base.html" %}
+
+{% block title %}{{ company.name }} | INSIGHT HIRE{% endblock %}
+
+{% block content %}
+<section class="company-section">
+    <div class="container">
+        <div class="company-hero panel panel-highlight">
+            <div class="company-hero-copy">
+                <p class="eyebrow">Software Engineer company intelligence</p>
+                <h1>{{ company.name }}</h1>
+                <p class="company-tagline">{{ company.tagline }}</p>
+                <div class="hero-actions">
+                    <a href="#insights" class="btn btn-primary">Jump to Insights</a>
+                    <a href="#referrals" class="btn btn-secondary">View Referrals</a>
+                </div>
+            </div>
+            <div class="company-hero-stats">
+                <div class="hero-stat-card">
+                    <span class="hero-stat-value">{{ company.job_fit.score }}</span>
+                    <span class="hero-stat-label">Job fit score</span>
+                </div>
+                <div class="hero-stat-card">
+                    <span class="hero-stat-value">{{ company.insight_count }}</span>
+                    <span class="hero-stat-label">Verified insights</span>
+                </div>
+                <div class="hero-stat-card">
+                    <span class="hero-stat-value">{{ company.unlocked_referrals }}</span>
+                    <span class="hero-stat-label">Unlocked referrals</span>
+                </div>
+                <div class="hero-stat-card">
+                    <span class="hero-stat-value">{{ company.skill_gap.match_percent }}%</span>
+                    <span class="hero-stat-label">Skill overlap</span>
+                </div>
+            </div>
+        </div>
+
+        <nav class="anchor-nav panel">
+            <a href="#overview">Overview</a>
+            <a href="#culture">Culture</a>
+            <a href="#insights">Employee Insights</a>
+            <a href="#questions">Interview Questions</a>
+            <a href="#skills">Skill Gap</a>
+            <a href="#referrals">Referral Matching</a>
+            <a href="#summary">AI Summary</a>
+            <a href="#resume">Resume Tips</a>
+            <a href="#fit">Job Fit Score</a>
+        </nav>
+
+        <section id="overview" class="panel split-panel">
+            <div>
+                <p class="eyebrow">Overview</p>
+                <h2>What matters here</h2>
+                <p>{{ company.hiring_style }}</p>
+                <div class="chip-row">
+                    {% for value in company.values_for_engineers %}
+                        <span class="chip">{{ value }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="panel inset-panel">
+                <p class="eyebrow">Best fit signal</p>
+                <p>{{ company.search_excerpt }}</p>
+            </div>
+        </section>
+
+        <section id="culture" class="panel">
+            <div class="panel-heading">
+                <div>
+                    <p class="eyebrow">Company culture</p>
+                    <h2>Work style and expectations</h2>
+                </div>
+            </div>
+            <div class="card-grid two-up">
+                <article class="culture-card">
+                    <h3>Work style</h3>
+                    <p>{{ company.culture.work_style }}</p>
+                </article>
+                <article class="culture-card">
+                    <h3>Collaboration style</h3>
+                    <p>{{ company.culture.collaboration }}</p>
+                </article>
+                <article class="culture-card">
+                    <h3>Pace</h3>
+                    <p>{{ company.culture.pace }}</p>
+                </article>
+                <article class="culture-card">
+                    <h3>Growth expectations</h3>
+                    <p>{{ company.culture.growth_expectations }}</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="insights" class="focus-section panel panel-highlight">
+            <div class="panel-heading">
+                <div>
+                    <p class="eyebrow">Verified employee insights</p>
+                    <h2>Verified perspective</h2>
+                </div>
+            </div>
+            <div class="card-grid three-up">
+                {% for insight in company.employee_insights %}
+                    <article class="insight-card">
+                        <div class="panel-heading">
+                            <div>
+                                <h3>{{ insight.alias }}</h3>
+                                <p class="subtle-label">{{ insight.role }}</p>
+                            </div>
+                            <span class="verified-badge"><i class="fa-solid fa-circle-check"></i> Verified Employee</span>
+                        </div>
+                        <p>{{ insight.insight }}</p>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section id="questions" class="focus-section panel">
+            <div class="panel-heading">
+                <div>
+                    <p class="eyebrow">Example interview questions</p>
+                    <h2>Interview prep</h2>
+                </div>
+            </div>
+            <div class="card-grid three-up">
+                {% for item in company.interview_questions %}
+                    <article class="question-card">
+                        <div class="question-icon">
+                            <i class="fa-solid fa-terminal"></i>
+                        </div>
+                        <h3>{{ item.question }}</h3>
+                        <div class="tip-callout">
+                            <p class="tip-label">Insider tip</p>
+                            <p>{{ item.tip }}</p>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section id="skills" class="panel">
+            <div class="panel-heading">
+                <div>
+                    <p class="eyebrow">Skill gap analysis</p>
+                    <h2>Resume vs role</h2>
+                </div>
+                <span class="soft-pill">{{ company.skill_gap.match_percent }}% overlap</span>
+            </div>
+            <div class="progress-shell">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{ company.skill_gap.match_percent }}%;"></div>
+                </div>
+            </div>
+            <div class="card-grid two-up">
+                <article class="panel inset-panel">
+                    <h3>Matched skills</h3>
+                    <div class="chip-row">
+                        {% for skill in company.skill_gap.matched_skills %}
+                            <span class="chip chip-good">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
+                    {% if not company.skill_gap.matched_skills %}
+                        <p class="subtle-copy">No direct high-signal matches were identified in the current sample profile.</p>
+                    {% endif %}
+                </article>
+                <article class="panel inset-panel">
+                    <h3>Missing signals</h3>
+                    <div class="chip-row">
+                        {% for skill in company.skill_gap.missing_skills %}
+                            <span class="chip chip-warning">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
+                </article>
+            </div>
+            <div class="recommendation-list">
+                {% for recommendation in company.skill_gap.recommendations[:2] %}
+                    <article class="recommendation-item">
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                        <span>{{ recommendation }}</span>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section id="referrals" class="focus-section panel panel-highlight">
+            <div class="panel-heading">
+                <div>
+                    <p class="eyebrow">Referral matching</p>
+                    <h2>Warm intro potential</h2>
+                </div>
+                <a href="{{ url_for('pricing') }}" class="btn btn-secondary btn-small">View Premium</a>
+            </div>
+            <div class="card-grid two-up">
+                {% for match in company.referral_matches %}
+                    <article class="referral-card {% if match.locked %}referral-card-locked{% endif %}">
+                        <div class="panel-heading">
+                            <div>
+                                <h3>{{ match.name }}</h3>
+                                <p class="subtle-label">{{ match.role }} | {{ match.team }}</p>
+                            </div>
+                            {% if match.locked %}
+                                <span class="soft-pill soft-pill-premium">Premium</span>
+                            {% else %}
+                                <span class="soft-pill">Unlocked</span>
+                            {% endif %}
+                        </div>
+                        <p>{{ match.note }}</p>
+                        {% if match.locked %}
+                            <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-modal-title="Premium referral path"
+                                data-modal-message="This referral card is locked in the current preview to highlight Premium access."
+                            >
+                                Unlock Premium
+                            </button>
+                        {% else %}
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                data-toast-message="Referral request sent."
+                                data-toast-detail="A simulated referral request was sent to {{ match.name }} at {{ company.name }}."
+                            >
+                                Request Referral
+                            </button>
+                        {% endif %}
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        <div class="analysis-grid">
+            <section id="summary" class="panel">
+                <p class="eyebrow">AI summary</p>
+                <h2>Fast read</h2>
+                <p class="lead-copy">{{ company.ai_summary }}</p>
+            </section>
+
+            <section id="resume" class="panel">
+                <p class="eyebrow">Resume tips</p>
+                <h2>Sample resume analysis</h2>
+                <div class="resume-sim">
+                    <div class="resume-upload-card">
+                        <p class="resume-label">Sample resume input</p>
+                        <h3>{{ demo_resume.candidate }}</h3>
+                        <div class="chip-row">
+                            {% for skill in demo_resume.skills %}
+                                <span class="chip">{{ skill }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="hero-actions">
+                            <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-toast-message="Sample resume analyzed."
+                                data-toast-detail="{{ company.name }} recommendations were generated instantly using the built-in Alex Chen profile."
+                            >
+                                Analyze Sample Resume
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-ghost"
+                                data-modal-title="Simulated upload"
+                                data-modal-message="Upload is simulated. Clicking analyze uses the built-in Alex Chen resume so the preview stays instant and reliable."
+                            >
+                                View Upload Logic
+                            </button>
+                        </div>
+                    </div>
+                    <div class="resume-tip-list">
+                        {% for tip in company.resume_tips[:2] %}
+                            <article class="recommendation-item">
+                                <i class="fa-solid fa-file-pen"></i>
+                                <span>{{ tip }}</span>
+                            </article>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+
+            <section id="fit" class="panel fit-score-panel">
+                <p class="eyebrow">Job fit score</p>
+                <h2>{{ company.job_fit.headline }}</h2>
+                <div class="fit-score-layout">
+                    <div class="fit-score-badge">
+                        <span>{{ company.job_fit.score }}</span>
+                        <small>out of 100</small>
+                    </div>
+                    <div>
+                        <p>{{ company.job_fit.explanation }}</p>
+                        <ul class="detail-list">
+                            {% for reason in company.job_fit.reasons[:2] %}
+                                <li>{{ reason }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</section>
+{% endblock %}

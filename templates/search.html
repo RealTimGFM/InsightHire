@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Search Companies | INSIGHT HIRE{% endblock %}
+
+{% block content %}
+<section class="search-section">
+    <div class="container">
+        <div class="search-hero panel panel-highlight">
+            <div class="search-hero-copy">
+                <p class="eyebrow">Company search</p>
+                <h1>Search the current target companies.</h1>
+                <p class="search-hero-copy-text">Explore focused software engineering profiles for Google, Microsoft, Nvidia, and Apple.</p>
+                <div class="search-target-list" aria-label="Tracked companies">
+                    <span>Google</span>
+                    <span>Microsoft</span>
+                    <span>Nvidia</span>
+                    <span>Apple</span>
+                </div>
+            </div>
+            <div class="search-hero-side">
+                <div class="search-form-card">
+                    <p class="eyebrow">Start here</p>
+                    <h2>Find a company fast</h2>
+                    <p>Search the live tracked set and open a full profile in one click.</p>
+                    <form method="get" action="{{ url_for('search') }}" class="search-form search-form-hero" data-loading-text="Searching...">
+                        <input type="text" name="q" value="{{ query }}" placeholder="Search Google, Microsoft, Nvidia, or Apple">
+                        <button type="submit" class="btn btn-primary">Search Company</button>
+                    </form>
+                    <p class="action-group-label">Quick search buttons</p>
+                    <div class="search-shortcuts">
+                        <a href="{{ url_for('search', q='Google') }}" class="search-shortcut">Google</a>
+                        <a href="{{ url_for('search', q='Microsoft') }}" class="search-shortcut">Microsoft</a>
+                        <a href="{{ url_for('search', q='Nvidia') }}" class="search-shortcut">Nvidia</a>
+                        <a href="{{ url_for('search', q='Apple') }}" class="search-shortcut">Apple</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="results-header">
+            <p>{{ total_results }} result{{ "" if total_results == 1 else "s" }}{% if query %} for "{{ query }}"{% endif %}</p>
+        </div>
+
+        {% if results %}
+            <div class="card-grid two-up">
+                {% for company in results %}
+                    <article class="panel search-result-card">
+                        <div class="panel-heading">
+                            <div>
+                                <p class="eyebrow">{{ company.name }}</p>
+                                <h2>{{ company.tagline }}</h2>
+                            </div>
+                            <span class="score-pill">{{ company.job_fit.score }}/100 fit</span>
+                        </div>
+                        <p>{{ company.search_excerpt }}</p>
+                        <div class="chip-row">
+                            <span class="chip">{{ company.insight_count }} verified insights</span>
+                            <span class="chip">{{ company.question_count }} interview questions</span>
+                            <span class="chip">{{ company.unlocked_referrals }} open referrals</span>
+                        </div>
+                        <a href="{{ url_for('company_detail', slug=company.slug) }}" class="btn btn-secondary">Open Profile</a>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="panel empty-state">
+                <h2>No companies matched that search.</h2>
+                <p>Try a company name like Google or Microsoft to return to the curated set.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

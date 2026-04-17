@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block title %}INSIGHT HIRE | Career Intelligence{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="container hero-grid">
+        <div class="hero-copy">
+            <p class="eyebrow">AI-powered career intelligence for software engineers</p>
+            <h1>Go beyond job postings with AI-powered career intelligence.</h1>
+            <p class="hero-subheadline">Research companies, learn from verified employee insights, prepare smarter, and stand out before you apply.</p>
+            <div class="hero-actions">
+                <a href="{{ url_for('signup') }}" class="btn btn-primary btn-large">Get Started</a>
+                <a href="{{ url_for('login') }}" class="btn btn-secondary btn-large">Log In</a>
+                <form method="post" action="{{ url_for('demo_login') }}" class="inline-form" data-loading-text="Opening Preview...">
+                    <button type="submit" class="btn btn-ghost btn-large">Instant Access</button>
+                </form>
+            </div>
+            <div class="hero-badges">
+                <span class="inline-badge">Software Engineer focus</span>
+                <span class="inline-badge">Verified employee previews</span>
+            </div>
+        </div>
+        <div class="hero-preview panel panel-highlight">
+            <div class="panel-heading">
+                <div>
+                    <p class="eyebrow">Live product snapshot</p>
+                    <h3>Featured company profiles</h3>
+                </div>
+                <span class="soft-pill">Now Live</span>
+            </div>
+            <div class="mini-stat-row">
+                {% for stat in landing_snapshot_stats %}
+                    <div class="mini-stat-card">
+                        <span class="mini-stat-value">{{ stat.value }}</span>
+                        <span class="mini-stat-label">{{ stat.label }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="preview-list">
+                {% for company in featured_companies %}
+                    <div class="preview-row">
+                        <div>
+                            <p class="preview-company">{{ company.name }}</p>
+                            <p class="preview-copy">{{ company.tagline }}</p>
+                        </div>
+                        <span class="score-pill">{{ company.job_fit.score }}/100 fit</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="trust-strip">
+    <div class="container">
+        <div class="company-strip">
+            <div class="company-track">
+                {% for company in company_marquee %}
+                    <span class="company-pill">{{ company }}</span>
+                {% endfor %}
+                {% for company in company_marquee %}
+                    <span class="company-pill">{{ company }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="features" class="section-block">
+    <div class="container">
+        <div class="section-header">
+            <p class="eyebrow">Why the idea feels useful</p>
+            <h2>Research, prep, and positioning in one place.</h2>
+        </div>
+        <div class="card-grid four-up">
+            {% for item in feature_highlights %}
+                <article class="feature-card panel">
+                    <div class="icon-badge">
+                        <i class="{{ item.icon }}"></i>
+                    </div>
+                    <h3>{{ item.title }}</h3>
+                    <p>{{ item["copy"] }}</p>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section-block">
+    <div class="container">
+        <div class="split-showcase">
+            <div class="section-header compact">
+                <p class="eyebrow">Core value</p>
+                <h2>A cleaner alternative to generic job board research.</h2>
+                <p class="section-copy">Better research leads to better preparation, stronger applications, and a believable premium layer.</p>
+            </div>
+            <div class="stacked-panels">
+                {% for pillar in value_pillars %}
+                    <div class="value-panel panel">
+                        <h3>{{ pillar.title }}</h3>
+                        <p>{{ pillar["copy"] }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-block">
+    <div class="container">
+        <div class="section-header">
+            <p class="eyebrow">How it works</p>
+            <h2>A simple three-step prep flow.</h2>
+        </div>
+        <div class="card-grid three-up">
+            {% for step in how_it_works %}
+                <article class="step-card panel">
+                    <span class="step-number">{{ step.step }}</span>
+                    <h3>{{ step.title }}</h3>
+                    <p>{{ step["copy"] }}</p>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section-block">
+    <div class="container">
+        <div class="section-header">
+            <p class="eyebrow">Company previews</p>
+            <h2>The four companies currently tracked.</h2>
+        </div>
+        <div class="card-grid four-up">
+            {% for company in featured_companies %}
+                <article class="company-preview-card panel">
+                    <div class="panel-heading">
+                        <h3>{{ company.name }}</h3>
+                        <span class="soft-pill">{{ company.job_fit.score }}/100</span>
+                    </div>
+                    <p>{{ company.search_excerpt }}</p>
+                    <div class="chip-row">
+                        <span class="chip">{{ company.insight_count }} insights</span>
+                        <span class="chip">{{ company.question_count }} interview questions</span>
+                        <span class="chip">{{ company.unlocked_referrals }} open referrals</span>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section-block">
+    <div class="container premium-banner panel panel-highlight">
+        <div>
+            <p class="eyebrow">Premium teaser</p>
+            <h2>Free shows value. Premium explains the business.</h2>
+            <p>Locked referral cards and deeper prep make the subscription story easy to understand.</p>
+        </div>
+        <a href="{{ url_for('pricing') }}" class="btn btn-secondary">View Pricing</a>
+    </div>
+</section>
+
+<section class="section-block">
+    <div class="container">
+        <div class="section-header">
+            <p class="eyebrow">Pricing preview</p>
+            <h2>A clean three-tier model.</h2>
+        </div>
+        <div class="card-grid three-up">
+            {% for plan in pricing_preview %}
+                <article class="pricing-card panel {% if plan.highlight %}pricing-card-highlight{% endif %}">
+                    <p class="pricing-name">{{ plan.name }}</p>
+                    <p class="pricing-price">{{ plan.price }}</p>
+                    <p class="pricing-billing">{{ plan.billing }}</p>
+                    <p>{{ plan.description }}</p>
+                    <a href="{{ url_for('pricing') }}" class="btn {% if plan.highlight %}btn-primary{% else %}btn-ghost{% endif %}">{{ plan.cta }}</a>
+                </article>
+            {% endfor %}
+            <article class="pricing-card panel">
+                <p class="pricing-name">Enterprise / School</p>
+                <p class="pricing-price">Contact Sales</p>
+                <p class="pricing-billing">institution partnerships</p>
+                <p>Career centers can use INSIGHT HIRE as a guided prep layer.</p>
+                <a href="{{ url_for('pricing') }}" class="btn btn-ghost">See Partnership Value</a>
+            </article>
+        </div>
+    </div>
+</section>
+{% endblock %}

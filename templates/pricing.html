@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Pricing | INSIGHT HIRE{% endblock %}
+
+{% block content %}
+<section class="pricing-section">
+    <div class="container">
+        <div class="page-hero panel panel-highlight">
+            <p class="eyebrow">Pricing</p>
+            <h1>Simple plans for different levels of access.</h1>
+            <p>Start free, upgrade for deeper insights, or contact us for school access.</p>
+        </div>
+
+        <div class="card-grid three-up">
+            {% for plan in plans %}
+                <article class="pricing-card panel {% if plan.highlight %}pricing-card-highlight{% endif %}">
+                    <p class="pricing-name">{{ plan.name }}</p>
+                    <p class="pricing-price">{{ plan.price }}</p>
+                    <p class="pricing-billing">{{ plan.billing }}</p>
+                    <p>{{ plan.description }}</p>
+                    <div class="feature-list">
+                        {% for feature in plan.features %}
+                            <div class="feature-list-item">
+                                <i class="fa-solid fa-check"></i>
+                                <span>{{ feature }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button
+                        type="button"
+                        class="btn {% if plan.highlight %}btn-primary{% else %}btn-secondary{% endif %} btn-block"
+                        data-toast-message="{{ plan.cta }}"
+                        data-toast-detail="Billing is simulated in this product preview. The pricing model is shown as part of the platform experience."
+                    >
+                        {{ plan.cta }}
+                    </button>
+                </article>
+            {% endfor %}
+        </div>
+
+        <section class="panel comparison-panel">
+            <div class="panel-heading">
+                <div>
+                    <p class="eyebrow">Feature comparison</p>
+                    <h2>Why Premium and school partnerships make sense</h2>
+                </div>
+            </div>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Free</th>
+                            <th>Premium</th>
+                            <th>Enterprise / School</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in comparison_rows %}
+                            <tr>
+                                <td>{{ row.feature }}</td>
+                                <td>{{ row.free }}</td>
+                                <td>{{ row.premium }}</td>
+                                <td>{{ row.enterprise }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="card-grid two-up">
+            <section class="panel">
+                <p class="eyebrow">Why Premium exists</p>
+                <h2>Monetizable value beyond basic research</h2>
+                <div class="feature-list">
+                    {% for note in business_model_notes %}
+                        <div class="feature-list-item">
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                            <span>{{ note }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="panel">
+                <p class="eyebrow">Enterprise / School</p>
+                <h2>Institution partnerships keep the story believable</h2>
+                <div class="feature-list">
+                    {% for point in institution_partnership_points %}
+                        <div class="feature-list-item">
+                            <i class="fa-solid fa-building-columns"></i>
+                            <span>{{ point }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+                <a href="{{ url_for('roadmap') }}" class="btn btn-secondary btn-small">See Roadmap</a>
+            </section>
+        </div>
+    </div>
+</section>
+{% endblock %}

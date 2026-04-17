@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Verified Preview | INSIGHT HIRE{% endblock %}
+
+{% block content %}
+<section class="dashboard-section">
+    <div class="container">
+        <div class="page-hero panel">
+            <p class="eyebrow">Verified employee preview</p>
+            <h1>How trusted insights appear on company pages.</h1>
+            <p>A lightweight preview of the verified employee side of the product.</p>
+        </div>
+
+        <div class="card-grid three-up">
+            {% for card in preview_cards %}
+                <article class="insight-card">
+                    <div class="panel-heading">
+                        <div>
+                            <h2>{{ card.company }}</h2>
+                            <p class="subtle-label">{{ card.alias }} | {{ card.role }}</p>
+                        </div>
+                        <span class="verified-badge"><i class="fa-solid fa-circle-check"></i> Verified Employee</span>
+                    </div>
+                    <p class="preview-card-headline">{{ card.headline }}</p>
+                    <p>{{ card.snippet }}</p>
+                </article>
+            {% endfor %}
+        </div>
+
+        <div class="hero-actions page-actions">
+            <a href="{{ url_for('search') }}" class="btn btn-primary">Browse Company Pages</a>
+            <a href="{{ url_for('verified_dashboard') }}" class="btn btn-secondary">Back to Verified Dashboard</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

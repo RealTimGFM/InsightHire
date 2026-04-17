@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Verified Employee Dashboard | INSIGHT HIRE{% endblock %}
+
+{% block content %}
+<section class="dashboard-section">
+    <div class="container">
+        <div class="dashboard-hero panel panel-highlight">
+            <div>
+                <p class="eyebrow">Verified employee flow</p>
+                <h1>{{ content.headline }}</h1>
+                <p>{{ content.summary }}</p>
+            </div>
+            <div class="hero-actions">
+                <a href="{{ url_for('verified_preview') }}" class="btn btn-primary">Preview Public Impact</a>
+                <a href="{{ url_for('search') }}" class="btn btn-secondary">Browse Company Pages</a>
+            </div>
+        </div>
+
+        <div class="verified-layout">
+            <section class="panel">
+                <p class="eyebrow">Badge status</p>
+                <h2>{{ content.status }}</h2>
+                <p>{{ content.support_copy }}</p>
+                <div class="verified-status-card">
+                    <span class="verified-badge"><i class="fa-solid fa-circle-check"></i> Verified Employee</span>
+                    <p>Your insight snippets appear on company pages to help job seekers evaluate fit and expectations.</p>
+                </div>
+            </section>
+
+            <section class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <p class="eyebrow">Public preview</p>
+                        <h2>How your perspective appears</h2>
+                    </div>
+                    <a href="{{ url_for('verified_preview') }}" class="btn btn-secondary btn-small">Open Preview</a>
+                </div>
+                <div class="card-grid three-up">
+                    {% for card in preview_cards %}
+                        <article class="verified-preview-card">
+                            <div class="panel-heading">
+                                <h3>{{ card.company }}</h3>
+                                <span class="verified-badge"><i class="fa-solid fa-circle-check"></i> Verified</span>
+                            </div>
+                            <p class="preview-card-headline">{{ card.headline }}</p>
+                            <p>{{ card.snippet }}</p>
+                            <p class="subtle-label">{{ card.alias }} | {{ card.role }}</p>
+                        </article>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    </div>
+</section>
+{% endblock %}
