@@ -42,15 +42,15 @@ COMPANY_MARQUEE = [
 
 LANDING_SNAPSHOT_STATS = [
     {
-        "value": "18",
+        "value": "100+",
         "label": "Tracked companies",
     },
     {
-        "value": "96",
+        "value": "1000+",
         "label": "Verified insight cards",
     },
     {
-        "value": "48",
+        "value": "500+",
         "label": "Referral paths",
     },
 ]
